@@ -29,11 +29,15 @@ export const post = (url, data, actionType, dispatch) => {
 };
 
 export const postAuthToken = (url, data, actionType, dispatch, headers) => {
+  const token = localStorage.getItem("authToken");
   return new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: `${actionType}_INIT` });
       const response = await axios.post(`${baseURL}${url}`, data, {
-        headers: headers.headers,
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+          ContentType: "application/json",
+        },
       });
       if (response.data.status == 401) {
         localStorage.removeItem("authToken");

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { getNoAuth } from "@/redux/actions/action";
+import { getNoAuth, post, postAuthToken } from "@/redux/actions/action";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 function TemplateForm() {
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState(null);
+  const [title, setTitle] = useState("");
+  const router = useRouter()
 
   const dispatch = useDispatch();
 
@@ -25,25 +29,11 @@ function TemplateForm() {
     const payload = {
       title,
       content,
-      subcategory,
+      subcategory: category,
     };
-    try {
-      const response = await fetch("/save-template", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ payload }),
-      });
-
-      if (response.ok) {
-        alert("Template saved successfully!");
-      } else {
-        alert(`Failed to save template: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error("Error saving content:", error);
-      alert("An error occurred while saving content.");
+    const response = await postAuthToken("/template/save-template", payload, "CREATE_TEMPLATE", dispatch)
+    if (response?.success) {
+      router?.push(`/templates/${response?.data?._id}`)
     }
   };
 
@@ -59,10 +49,20 @@ function TemplateForm() {
             <h1 className="text-gray-800 font-semibold text-lg mb-3">
               Select Category
             </h1>
-
-            <select name="cars" id="cars" className="mb-4">
-              {subCategoryData?.map((e) => (
-                <option value={e?._id}>{e?.name}</option>
+            <select
+              value={category || ""}
+              onChange={(e) => setCategory(e.target.value)}
+              name="categories"
+              id="categories"
+              className="mb-4"
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              {subCategoryData?.map((item) => (
+                <option key={item?._id} value={item?._id}>
+                  {item?.name}
+                </option>
               ))}
             </select>
           </div>
@@ -72,7 +72,7 @@ function TemplateForm() {
             name="name"
             type="text"
             required
-            // onChange={handleChange}
+            onChange={(e) => { setTitle(e?.target?.value) }}
             className="block w-auto px-2 mt-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
           />
           <div>

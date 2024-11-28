@@ -2,12 +2,14 @@ import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import AuthReducer from "./reducer/AuthReducer";
 import CategoryReducer from "./reducer/categoryReducer";
 import SubCategoryReducer from "./reducer/subCategoryReducer";
+import TemplateReducer from "./reducer/templateReducer";
 import { thunk } from "redux-thunk";
 
 const rootReducer = combineReducers({
   Auth: AuthReducer,
   Category: CategoryReducer,
   SubCategory: SubCategoryReducer,
+  Template: TemplateReducer,
 });
 
 const initialState = {};
