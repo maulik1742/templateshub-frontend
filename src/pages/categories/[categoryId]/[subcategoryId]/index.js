@@ -2,39 +2,49 @@ import React, { useEffect } from "react";
 import HeroSection from "../../../../components/HeroSection";
 import { useRouter } from "next/router";
 import { getNoAuth } from "@/redux/actions/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import CategoryCard from "@/components/CategoriesCard";
 
 const TemplatesPage = () => {
-  const templates = [
-    { id: "1-1-1", name: "Formal Resignation Letter" },
-    { id: "1-1-2", name: "Immediate Resignation Letter" },
-  ];
-
+  // const templates = [
+  //   { id: "1-1-1", name: "Formal Resignation Letter" },
+  //   { id: "1-1-2", name: "Immediate Resignation Letter" },
+  // ];
+  const dispatch = useDispatch();
   const router = useRouter();
-  const { categoryId, subcategoryId } = router.query;
+  const template = useSelector((state) => state?.Template?.template);
 
+  const { categoryId, subcategoryId } = router.query;
+  console.log("subcategoryId :>> ", subcategoryId);
+  const getTemplate = async () => {
+    const res = await getNoAuth(
+      `/template?subcategory=${subcategoryId}`,
+      "GET_TEMPLATE",
+      dispatch
+    );
+    return res;
+  };
+  useEffect(() => {
+    if (subcategoryId) {
+      getTemplate();
+    }
+  }, [subcategoryId]);
+  console.log("template :>> ", template);
   return (
     <div>
       <HeroSection
         title="Templates"
-        description="Choose a template and copy it instantly."
+        description="Choose a Template And Copy It Instantly."
         showSearch={false}
       />
-      <div className="max-w-7xl mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {templates.map((template) => (
-          <div
-            key={template.id}
-            className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition cursor-pointer"
-            onClick={() =>
-              router.push(
-                `/categories/${categoryId}/${subcategoryId}/${template.id}`
-              )
-            }
-          >
-            <h3 className="text-xl font-bold text-indigo-600">
-              {template.name}
-            </h3>
-          </div>
+      <div className="max-w-7xl mx-auto flex flex-wrap py-10 px-28 capitalize  text-center gap-32">
+        {template?.map((template) => (
+          <CategoryCard
+            key={template?._id}
+            title={template?.title}
+            description="Click to view templates"
+            onClick={() => router.push(`/content/${template._id}`)}
+          />
         ))}
       </div>
     </div>

@@ -11,7 +11,7 @@ function TemplateForm() {
   const [content, setContent] = useState("");
   const [category, setCategory] = useState(null);
   const [title, setTitle] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -31,9 +31,14 @@ function TemplateForm() {
       content,
       subcategory: category,
     };
-    const response = await postAuthToken("/template/save-template", payload, "CREATE_TEMPLATE", dispatch)
+    const response = await postAuthToken(
+      "/template/save-template",
+      payload,
+      "CREATE_TEMPLATE",
+      dispatch
+    );
     if (response?.success) {
-      router?.push(`/templates/${response?.data?._id}`)
+      router?.push(`/content/${response?.data?._id}`);
     }
   };
 
@@ -72,7 +77,9 @@ function TemplateForm() {
             name="name"
             type="text"
             required
-            onChange={(e) => { setTitle(e?.target?.value) }}
+            onChange={(e) => {
+              setTitle(e?.target?.value);
+            }}
             className="block w-auto px-2 mt-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
           />
           <div>

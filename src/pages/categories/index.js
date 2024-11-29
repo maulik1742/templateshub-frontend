@@ -5,20 +5,6 @@ import { useRouter } from "next/router";
 import { getNoAuth } from "@/redux/actions/action";
 import { useDispatch, useSelector } from "react-redux";
 
-const categories = [
-  {
-    id: "1",
-    name: "Resignation Letters",
-    description: "Templates for resignations",
-  },
-  { id: "2", name: "Offer Letters", description: "Templates for job offers" },
-  {
-    id: "3",
-    name: "Email Templates",
-    description: "Corporate email templates",
-  },
-];
-
 const CategoriesPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -40,7 +26,7 @@ const CategoriesPage = () => {
         description="Browse through our categories and find the perfect template for your needs."
         showSearch={false}
       />
-      <div className="max-w-7xl mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto flex flex-wrap justify-center py-10 px-6 text-center capitalize gap-10">
         {categories?.map((category) => (
           <CategoryCard
             key={category.id}

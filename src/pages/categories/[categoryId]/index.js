@@ -5,21 +5,6 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { getNoAuth } from "@/redux/actions/action";
 
-const subcategoriesData = {
-  1: [
-    { id: "1-1", name: "Immediate Resignation" },
-    { id: "1-2", name: "Resignation with Notice" },
-  ],
-  2: [
-    { id: "2-1", name: "Formal Offer" },
-    { id: "2-2", name: "Conditional Offer" },
-  ],
-  3: [
-    { id: "3-1", name: "Follow-Up Emails" },
-    { id: "3-2", name: "Meeting Invitations" },
-  ],
-};
-
 const SubcategoriesPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,7 +37,7 @@ const SubcategoriesPage = () => {
         description="Select a subcategory to explore templates."
         showSearch={false}
       />
-      <div className="max-w-7xl mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 capitalize">
         {subCategories && subCategories?.length > 0 ? (
           subCategories.map((subcategory) => (
             <CategoryCard

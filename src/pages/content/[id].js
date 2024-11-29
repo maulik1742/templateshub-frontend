@@ -7,11 +7,11 @@ const TemplatePage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { id } = router.query;
-  const data = useSelector((state) => state?.Template?.template)
+  const data = useSelector((state) => state?.Template?.template);
 
   const getTemplate = async () => {
     await getNoAuth(`/template?id=${id}`, "GET_TEMPLATE", dispatch);
-  }
+  };
 
   const handleCopy = () => {
     if (data?.[0]?.content) {
@@ -27,16 +27,14 @@ const TemplatePage = () => {
 
   useEffect(() => {
     if (id) {
-      getTemplate()
+      getTemplate();
     }
   }, [id]);
 
   return (
     <>
       <div className=" flex items-center justify-center bg-gray-100">
-        <h1 className="text-3xl font-bold text-gray-800">
-          {data?.[0]?.title}
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-800">{data?.[0]?.title}</h1>
       </div>
       <div className="container mx-auto mt-8 flex justify-center">
         <div className="w-3/4 border border-red-400 p-4">
