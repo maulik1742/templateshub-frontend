@@ -6,19 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryCard from "@/components/CategoriesCard";
 
 const TemplatesPage = () => {
-  // const templates = [
-  //   { id: "1-1-1", name: "Formal Resignation Letter" },
-  //   { id: "1-1-2", name: "Immediate Resignation Letter" },
-  // ];
-  const dispatch = useDispatch();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { subcategoryId } = router.query;
   const template = useSelector((state) => state?.Template?.template);
 
-  const { categoryId, subcategoryId } = router.query;
-  console.log("subcategoryId :>> ", subcategoryId);
-  const getTemplate = async () => {
+  const getTemplates = async (search) => {
     const res = await getNoAuth(
-      `/template?subcategory=${subcategoryId}`,
+      `/template?subcategory=${subcategoryId}&search=${search || ""}`,
       "GET_TEMPLATE",
       dispatch
     );
@@ -26,26 +21,43 @@ const TemplatesPage = () => {
   };
   useEffect(() => {
     if (subcategoryId) {
-      getTemplate();
+      getTemplates();
     }
   }, [subcategoryId]);
-  console.log("template :>> ", template);
+  const handleSearch = (e) => {
+    getTemplates(e);
+  };
+
   return (
     <div>
       <HeroSection
         title="Templates"
         description="Choose a Template And Copy It Instantly."
-        showSearch={false}
+        showSearch={true}
+        onSearch={handleSearch}
+        searchPlaceholder={"Search Templates"}
       />
-      <div className="max-w-7xl mx-auto flex flex-wrap py-10 px-28 capitalize  text-center gap-32">
-        {template?.map((template) => (
-          <CategoryCard
-            key={template?._id}
-            title={template?.title}
-            description="Click to view templates"
-            onClick={() => router.push(`/content/${template._id}`)}
+      <div className="max-w-7xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center gap-6 pl-32 py-10 px-20 capitalize">
+        {template && template?.length > 0 ? (
+          template?.map((template) => (
+            <CategoryCard
+              key={template?._id}
+              title={template?.title}
+              description="Click to view templates"
+              onClick={() => router.push(`/content/${template._id}`)}
+            />
+          ))
+        ) : (
+          <img
+            src="/no-data1.png"
+            style={{
+              width: "300px",
+              height: "200px",
+              objectFit: "cover",
+              marginLeft: "100%",
+            }}
           />
-        ))}
+        )}
       </div>
     </div>
   );

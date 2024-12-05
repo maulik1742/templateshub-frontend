@@ -6,7 +6,6 @@ const initialState = {
 };
 
 const store = (state = initialState, action) => {
-  console.log("action?.payload :>> ", action);
   switch (action.type) {
     case actionTypes.GET_CATEGORY_SUCCESS:
       return {

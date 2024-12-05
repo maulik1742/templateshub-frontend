@@ -12,13 +12,12 @@ const SubcategoriesPage = () => {
   const subCategories = useSelector(
     (state) => state?.SubCategory?.subCategories
   );
-  const getSubCategory = async () => {
+  const getSubCategory = async (search) => {
     const response = await getNoAuth(
-      `/category/subcategory?categoryId=${categoryId}`,
+      `/category/subcategory?categoryId=${categoryId}&search=${search || ""}`,
       "GET_SUBCATEGORY",
       dispatch
     );
-    console.log("response :>> ", response);
     return response;
   };
   useEffect(() => {
@@ -26,18 +25,21 @@ const SubcategoriesPage = () => {
       getSubCategory();
     }
   }, [categoryId]);
-  console.log("categoryId :>> ", categoryId);
-  console.log("Redux state:", subCategories);
   // const subcategories = subcategoriesData[categoryId] || [];
 
+  const handleSearch = (e) => {
+    getSubCategory(e);
+  };
   return (
     <div>
       <HeroSection
         title="Explore Subcategories"
         description="Select a subcategory to explore templates."
-        showSearch={false}
+        showSearch={true}
+        onSearch={handleSearch}
+        searchPlaceholder={"Search Subcategory"}
       />
-      <div className="max-w-7xl mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 capitalize">
+      <div className="max-w-7xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center gap-6 pl-32 py-10 px-20 capitalize">
         {subCategories && subCategories?.length > 0 ? (
           subCategories.map((subcategory) => (
             <CategoryCard
@@ -50,7 +52,17 @@ const SubcategoriesPage = () => {
             />
           ))
         ) : (
-          <p>No subcategories available.</p>
+          <>
+            <img
+              src="/no-data1.png"
+              style={{
+                width: "300px",
+                height: "200px",
+                objectFit: "cover",
+                marginLeft: "100%",
+              }}
+            />
+          </>
         )}
       </div>
     </div>

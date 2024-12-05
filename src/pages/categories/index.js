@@ -9,27 +9,39 @@ const CategoriesPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state?.Category?.categories);
-  const getCategories = async () => {
-    const res = await getNoAuth("/category", "GET_CATEGORY", dispatch);
-    console.log("res :>> ", res);
-    return res;
+
+  const getCategories = async (search) => {
+    await getNoAuth(
+      `/category?search=${search || ""}`,
+      "GET_CATEGORY",
+      dispatch
+    );
   };
 
   useEffect(() => {
     getCategories();
   }, []);
 
+  const handleSearch = (e) => {
+    getCategories(e);
+  };
+
   return (
     <div>
+      {/* Hero Section */}
       <HeroSection
+        onSearch={handleSearch}
         title="Explore Categories"
         description="Browse through our categories and find the perfect template for your needs."
-        showSearch={false}
+        showSearch={true}
+        searchPlaceholder={"Search category"}
       />
-      <div className="max-w-7xl mx-auto flex flex-wrap justify-center py-10 px-6 text-center capitalize gap-10">
+
+      {/* Categories Grid */}
+      <div className="max-w-7xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-36 py-10 px-20 items-center justify-center capitalize">
         {categories?.map((category) => (
           <CategoryCard
-            key={category.id}
+            key={category._id}
             title={category.name}
             description={category.description}
             onClick={() => router.push(`/categories/${category._id}`)}

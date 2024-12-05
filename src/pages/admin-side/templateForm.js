@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { getNoAuth, post, postAuthToken } from "@/redux/actions/action";
+import { getNoAuth, postAuthToken } from "@/redux/actions/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -43,23 +43,34 @@ function TemplateForm() {
   };
 
   return (
-    <div className="bg-slate-200 h-screen pt-10 ">
-      <div className="container m-auto">
-        <div className="p-7 bg-slate-300 rounded-xl text-2xl font-semibold mb-8">
-          Create Template{" "}
-        </div>
+    <div className="bg-gradient-to-b from-blue-50 to-blue-100 min-h-screen py-10">
+      {/* Page Header */}
+      <div className="container mx-auto text-center mb-10">
+        <h1 className="text-3xl font-bold text-indigo-600 bg-white rounded-lg py-4 px-6 shadow-md">
+          Create a New Template
+        </h1>
+      </div>
 
-        <form onSubmit={handleSubmit}>
-          <div>
-            <h1 className="text-gray-800 font-semibold text-lg mb-3">
+      {/* Form Container */}
+      <div className="container mx-auto px-4 max-w-4xl">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-lg rounded-lg p-8"
+        >
+          {/* Select Category */}
+          <div className="mb-6">
+            <label
+              htmlFor="categories"
+              className="block text-lg font-medium text-gray-700 mb-2"
+            >
               Select Category
-            </h1>
+            </label>
             <select
               value={category || ""}
               onChange={(e) => setCategory(e.target.value)}
-              name="categories"
               id="categories"
-              className="mb-4"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              required
             >
               <option value="" disabled>
                 Select a category
@@ -71,36 +82,50 @@ function TemplateForm() {
               ))}
             </select>
           </div>
-          <label className="font-semibold mb-3 text-lg">Title</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            onChange={(e) => {
-              setTitle(e?.target?.value);
-            }}
-            className="block w-auto px-2 mt-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-          />
-          <div>
-            <h1 className="text-gray-800 font-semibold text-lg mb-3 mt-3">
-              Template text
-            </h1>
 
+          {/* Title Input */}
+          <div className="mb-6">
+            <label
+              htmlFor="title"
+              className="block text-lg font-medium text-gray-700 mb-2"
+            >
+              Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter the template title"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              required
+            />
+          </div>
+
+          {/* Template Text Editor */}
+          <div className="mb-6">
+            <label
+              htmlFor="content"
+              className="block text-lg font-medium text-gray-700 mb-2"
+            >
+              Template Content
+            </label>
             <ReactQuill
+              id="content"
               className="!rounded-lg"
-              theme="snow" // Choose a Quill theme
+              theme="snow"
               value={content}
               onChange={setContent}
               placeholder="Type your content here..."
             />
           </div>
+
+          {/* Submit Button */}
           <button
-            className="bg-slate-600 p-2 rounded-md px-4 text-white"
             type="submit"
-            style={{ marginTop: "10px" }}
+            className="w-auto bg-indigo-600 text-white py-3 px-3 rounded-lg hover:bg-indigo-700 transition duration-300 font-semibold"
           >
-            Save Content
+            Save Template
           </button>
         </form>
       </div>

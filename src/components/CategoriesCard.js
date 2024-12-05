@@ -4,7 +4,7 @@ const CategoryCard = ({ title, description, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-white p-6 rounded-lg shadow-lg w-72 hover:shadow-xl transform hover:scale-105 transition cursor-pointer border border-gray-200"
+      className="w-72 h-56 p-4 flex flex-col justify-between bg-white shadow-lg hover:shadow-xl rounded-lg overflow cursor-pointer transition-transform transform hover:scale-105 relative"
     >
       {/* Icon Section */}
       <div className="flex items-center justify-between mb-4">
@@ -28,16 +28,18 @@ const CategoryCard = ({ title, description, onClick }) => {
           </div>
           <h3 className="text-xl font-bold text-indigo-600">{title}</h3>
         </div>
-        {/* Optional Badge */}
-        <span className="text-sm font-medium text-white bg-[#918ce6ad] px-2 py-0.5 rounded-lg">
-          New
-        </span>
       </div>
 
-      {/* Description Section */}
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">
-        {description}
-      </p>
+      {/* Description Section with Tooltip */}
+      <div className="relative group">
+        <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+          {description}
+        </p>
+        {/* Tooltip */}
+        <div className="absolute top-7 left-20 ml-3 w-64 hidden group-hover:block bg-gray-800 text-white text-xs font-medium py-2 px-3 rounded-md shadow-lg z-10">
+          {description}
+        </div>
+      </div>
 
       {/* Action Buttons */}
       <div className="mt-4 flex justify-center items-center">
