@@ -51,14 +51,16 @@ export default function IndexPage() {
               Popular Categories
             </h2>
 
-            <div className="max-w-9xl mx-auto  grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 pl-36 px-10 items-center justify-center capitalize">
+            <div className="max-w-9xl mx-auto  grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 px-10 items-center justify-center capitalize">
               {categories?.slice(0, 3).map((category) => (
-                <CategoryCard
-                  key={category._id}
-                  title={category.name}
-                  description={category.description}
-                  onClick={() => router.push(`/categories/${category._id}`)}
-                />
+                <div className="w-full flex justify-center">
+                  <CategoryCard
+                    key={category._id}
+                    title={category.name}
+                    description={category.description}
+                    onClick={() => router.push(`/categories/${category._id}`)}
+                  />
+                </div>
               ))}
             </div>
           </div>

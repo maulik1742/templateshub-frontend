@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:8000";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+console.log("baseURL :>> ", baseURL);
 
 export const post = (url, data, actionType, dispatch) => {
   return new Promise(async (resolve, reject) => {
