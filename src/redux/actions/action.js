@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const baseURL = "https://templateshub-backend.onrender.com";
-console.log("baseURL :>> ", baseURL);
 
 export const post = (url, data, actionType, dispatch) => {
   return new Promise(async (resolve, reject) => {
